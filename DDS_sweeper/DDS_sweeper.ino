@@ -139,13 +139,12 @@ void Perform_sweep(){
     }
     
     // Send current line back to PC over serial bus
+	  // Updated for compatibility with the new software from
+	  // https://dl.dropboxusercontent.com/u/205696/K6BEZ/AntennaAnalyser/PC_Software.zip
+
     Serial.print(current_freq_MHz*1000000);
-    Serial.print(",0,");
-    Serial.print(int(VSWR*1000));
     Serial.print(",");
-    Serial.print(FWD);
-    Serial.print(",");
-    Serial.println(REV);
+    Serial.println(int(VSWR*1000));
   }
   // Send "End" to PC to indicate end of sweep
   Serial.println("End");
