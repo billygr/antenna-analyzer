@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 4.0.0.7139-reports
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VNA", "VNA\VNA.vbproj", "{0D11C004-87A7-491D-B13B-D701888A69C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D11C004-87A7-491D-B13B-D701888A69C1}.Debug|x86.Build.0 = Debug|x86
+		{0D11C004-87A7-491D-B13B-D701888A69C1}.Debug|x86.ActiveCfg = Debug|x86
+		{0D11C004-87A7-491D-B13B-D701888A69C1}.Release|x86.Build.0 = Release|x86
+		{0D11C004-87A7-491D-B13B-D701888A69C1}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+EndGlobal
