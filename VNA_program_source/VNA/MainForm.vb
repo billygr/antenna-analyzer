@@ -118,7 +118,7 @@ Public Partial Class MainForm
 		myPane.Title.Text = "SWR Verlauf"
 		myPane.Title.Text = FreqSwr
 		myPane.Title.FontSpec.Size= 24
-		myPane.XAxis.Title.Text = "Frequenz"
+		myPane.XAxis.Title.Text = "Frequency"
 		myPane.YAxis.Title.Text = "SWR"  
 		
 		zg1.GraphPane.XAxis.Scale.Min = txtStartFreq.text

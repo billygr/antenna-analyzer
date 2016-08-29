@@ -125,9 +125,9 @@ Partial Class MainForm
 		'
 		Me.chkContSweep.Location = New System.Drawing.Point(427, 472)
 		Me.chkContSweep.Name = "chkContSweep"
-		Me.chkContSweep.Size = New System.Drawing.Size(100, 18)
+		Me.chkContSweep.Size = New System.Drawing.Size(120, 18)
 		Me.chkContSweep.TabIndex = 18
-		Me.chkContSweep.Text = "Dauer Sweep"
+		Me.chkContSweep.Text = "Continous Sweep"
 		Me.chkContSweep.UseVisualStyleBackColor = true
 		'
 		'timer2
@@ -321,7 +321,7 @@ Partial Class MainForm
 		Me.Controls.Add(Me.zg1)
 		Me.Controls.Add(Me.btnConnect)
 		Me.Name = "MainForm"
-		Me.Text = "VNA - Arduino Antennen Analysator"
+		Me.Text = "VNA - Arduino Antenna Analyser"
 		AddHandler Load, AddressOf Me.MainFormLoad
 		CType(Me.trackBar1,System.ComponentModel.ISupportInitialize).EndInit
 		Me.ResumeLayout(false)
