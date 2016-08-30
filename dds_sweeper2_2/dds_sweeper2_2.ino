@@ -31,10 +31,17 @@
 // Define Pins used to control AD9850 DDS
 
 // board ..
-const int SCLK  = 12;
-const int FQ_UD = 11;
-const int SDAT  = 10;
-const int RESET = 9;
+//const int SCLK  = 12;
+//const int FQ_UD = 11;
+//const int SDAT  = 10;
+//const int RESET = 9;
+
+// K6BEZ pinout
+const int SCLK=9;
+const int FQ_UD=10;
+const int SDAT=11;
+const int RESET=12;
+
 
 double Fstart_MHz = 1.0;  // Start Frequency for sweep
 double Fstop_MHz = 30.000;  // Stop Frequency for sweep
