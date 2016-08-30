@@ -285,11 +285,11 @@ void Perform_sweep() {
     Serial.print(", ");
     Serial.print(FWD, 0);
     Serial.print(", ");
-    Serial.println(REV, 0);
+    Serial.print(REV, 0);Serial.print("\n");//Potential workaround to vb.net SerialPort.ReadLine
   }
   // Send "End" to PC to indicate end of sweep
   dds_off();
-  Serial.println("End");
+  Serial.print("End\n"); //Potential workaround to vb.net SerialPort.ReadLine
   Serial.flush();
 }
 
