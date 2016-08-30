@@ -74,7 +74,7 @@ Public Partial Class MainForm
 		fStart = Val(txtStartFreq.Text)
 		txtStopFreq.Text = "30"
 		fStop = Val(txtStopFreq.Text)
-		txtNumSteps.Text = "101"
+		txtNumSteps.Text = "100"
 		chkContSweep.Checked = False
 		bSerialOpen = False
 		trackBar1.Value = 10
@@ -132,7 +132,7 @@ Public Partial Class MainForm
 		Dim list2 = New PointPairList()
 		
 		' Zeichne Graph	SWR
-		For i = 0 To numSteps-1		
+		For i = 0 To numSteps		
 		   If SweepSWR(i) > 0 Then				
 				list1.Add(SweepFreqs(i) , SweepSWR(i))
 		   End If
@@ -143,7 +143,7 @@ Public Partial Class MainForm
 		Dim j As Integer
 		Dim min As Double = 1000
 		
-		For i = 0 To numSteps-1
+		For i = 0 To numSteps
 			
 			If SweepSWR(i) < min And SweepSWR(i) > 0 Then
 				min = SweepSWR(i)
@@ -185,7 +185,7 @@ Public Partial Class MainForm
 		If SerialPort1.IsOpen = False Then Return
 		
 		bSweeping = True
-		numSteps = Val(txtNumSteps.Text) + 1
+		numSteps = Val(txtNumSteps.Text)
 		
 		'More than 1000 steps takes a while
 		If numSteps > 1001 Then
