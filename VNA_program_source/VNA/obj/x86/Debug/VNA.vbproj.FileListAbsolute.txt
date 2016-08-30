@@ -1,9 +1,0 @@
-C:\Users\Norbert Redeker\Documents\SharpDevelop Projects\VNA\VNA\bin\Debug\VNA.exe.config
-C:\Users\Norbert Redeker\Documents\SharpDevelop Projects\VNA\VNA\bin\Debug\VNA.exe
-C:\Users\Norbert Redeker\Documents\SharpDevelop Projects\VNA\VNA\bin\Debug\VNA.pdb
-C:\Users\Norbert Redeker\Documents\SharpDevelop Projects\VNA\VNA\obj\x86\Debug\VNA.vbprojResolveAssemblyReference.cache
-C:\Users\Norbert Redeker\Documents\SharpDevelop Projects\VNA\VNA\obj\x86\Debug\VNA.exe
-C:\Users\Norbert Redeker\Documents\SharpDevelop Projects\VNA\VNA\obj\x86\Debug\VNA.pdb
-C:\Users\Norbert Redeker\Documents\SharpDevelop Projects\VNA\VNA\obj\x86\Debug\VNA.MainForm.resources
-C:\Users\Norbert Redeker\Documents\SharpDevelop Projects\VNA\VNA\obj\x86\Debug\VNA.vbproj.GenerateResource.Cache
-C:\Users\Norbert Redeker\Documents\SharpDevelop Projects\VNA\VNA\bin\Debug\de\ZedGraph.resources.dll
