@@ -1,47 +1,25 @@
-#include <EEPROM.h>
-#include "cw.h"
-
 /***
- * update 12 02 2016 Version "dds_sweeper2_2"
- * - Korrektur Tunefunktion 't' und Funktion 'c' ( On/off DDS)
- * 
-   update 16 01 2016 Version "dds_sweeper2_1"
-   - bakengeschwindigkeit von 18 auf 12 wpm erniedrigt.
-   - dds_off() bei ende des sweep
-   - dds_off() bei beliebiger taste
-   - befehl 't' = "tune": sendet traeger mit der startfrequenz ( 'a' oder 'c' )
+ * DDS_Sweeper
+ * Author Beric Dunn (K6BEZ)
+ * Modified by Norbert Redeker (DG7EAO)
+ * Modified by Heribert Schulte (dk2jk)
+ * CC-BY-SA: Creative Commons Attribution-ShareAlike 3.0 Unported License
+ *
 */
-/***************************************************************************\
-    Name    : DDS_Sweeper2
-    Author  : Beric Dunn (K6BEZ)
-    Notice  : Copyright (c) 2013  CC-BY-SA
-            : Creative Commons Attribution-ShareAlike 3.0 Unported License
-    Date    : 9/26/2013  10/2015 (hs)
-    Version : n
-    Notes   : Written using for the Arduino
-            :   Pins:
-            :    A0 - Reverse Detector Analog in
-            :    A1 - Forward Detector Analog in
-            : Modified by Norbert Redeker (DG7EAO) 07/2014
-            : Modified by Heribert Schulte dk2jk 09/2014 //(hs)
-            : mit verstaerker hinter dds, (Hardware m4) okt 2015
-            : 17.10.15 bake
-  \***************************************************************************/
 
 // Define Pins used to control AD9850 DDS
 
-// board ..
-//const int SCLK  = 12;
-//const int FQ_UD = 11;
-//const int SDAT  = 10;
-//const int RESET = 9;
+// dk2jk board
+const int SCLK  = 12;
+const int FQ_UD = 11;
+const int SDAT  = 10;
+const int RESET = 9;
 
 // K6BEZ pinout
-const int SCLK=9;
-const int FQ_UD=10;
-const int SDAT=11;
-const int RESET=12;
-
+//const int SCLK=9;
+//const int FQ_UD=10;
+//const int SDAT=11;
+//const int RESET=12;
 
 double Fstart_MHz = 1.0;  // Start Frequency for sweep
 double Fstop_MHz = 30.000;  // Stop Frequency for sweep
@@ -54,14 +32,8 @@ double offset_reverse;
 bool interpreter_aktiv = false;
 bool tune_aktiv = false;
 
-struct s_eeprom {
-  char text[40]; // das ist der text fuer die bake
-};
-s_eeprom eeprom;
-
 const char  SoftwareVersion[] = "Software Version: " __FILE__; //"Vers.:dds_sweeper1_13dez2014.ino";
 const char     SoftwareDate[] = "Build Date      : " __DATE__; //"Vers.:dds_sweeper1_13dez2014.ino";
-Cw bake(12);  // 2_1 speed von 18 auf 12 erniedrigt
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -73,7 +45,6 @@ void setup() {
 
   // Configure LED pin for digital output
   pinMode(13, OUTPUT);
-
 
   // Set up analog inputs on A0 and A1, internal reference voltage
   pinMode(A0, INPUT);
@@ -91,11 +62,9 @@ void setup() {
   //Initialise the incoming serial number to zero
   serial_input_number = 0;
 
-  EEPROM.get(0, eeprom);
   calc_offset();
   version();
   Serial.flush();
-
 }
 
 void interpreter(char rxd)
@@ -144,12 +113,6 @@ void interpreter(char rxd)
     case 'S':
     case 's':
       Perform_sweep();
-      break;
-    case '!':
-      inputText();
-      break;
-    case '#':
-      runBake();
       break;
     case 't':
       if ( tune_aktiv)
@@ -210,8 +173,7 @@ void help()
   Serial.println("'#'\tsend beacon tx text again and again ( break with '#' )");
   Serial.println(" \tBeacon frequency is start frequency ( command 'a' or 'c' )");
   Serial.print("actual beacon text: \"");
-  EEPROM.get(0, eeprom);
-  Serial.print(eeprom.text);
+
   Serial.println("\"");
   Serial.print("Info offset forward: ");
   Serial.print(offset_forward, 0);
@@ -318,54 +280,6 @@ void send_byte(byte data_to_send) {
   }
 }
 
-void inputText()
-{ int i;
-  eeprom.text[0] = ' ';
-  for (i = 1; i < sizeof(eeprom.text); i++)
-  { do
-    {} while (Serial.available() == 0);
-    char c = Serial.read();
-    if ( (c == 0x0d ) || (c == 0x0a))
-    { break;
-    }
-    else
-    { eeprom.text[i] = c;
-    }
-  }
-  eeprom.text[i] = 0;
-  EEPROM.put(0, eeprom);
-}
-
-void runBake() {
-  bool ende = false;
-  Serial.print("bake laeuft! stop '#' ");
-  EEPROM.get(0, eeprom);
-  bake.setText(eeprom.text);
-  do
-  { bake.start();
-    while ( bake.busy() )
-    { if (Serial.available() > 0)
-      { char c;
-        c = Serial.read();
-        if (c == '#')
-        { bake.stop();
-          ende = true;
-          break;
-        }
-      }
-      bake.run();
-      if (bake.key)
-      { SetDDSFreq(Fstart_MHz * 1000000);
-      }
-      else
-      { SetDDSFreq(0.0);
-      }
-    }
-  } while ( !ende);
-  dds_off();
-  Serial.println(".. ende");
-}
-
 void tune()
 { SetDDSFreq(Fstart_MHz * 1000000);
 }
@@ -373,4 +287,3 @@ void tune()
 void dds_off()
 { SetDDSFreq(0L); // Null hertz = AUS
 }
-
