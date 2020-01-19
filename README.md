@@ -1,12 +1,12 @@
 # antenna-analyzer
 This a a fork/clone of the famous K6BEZ antenna analyzer.
 
-I have build the hardware and still testing the software.
-
 ## Arduino
-Directory DDS_sweeper contains code from K6BEZ
+Directory DDS_sweeper the contains code from K6BEZ
 
 Directory DDS_sweeper2 is DK2JK version that works with the PC software VNA (vna.exe)
+
+Directory HEX contains a working version from DK2JK for his board (not pinout compatible with K6BEZ)
 
 ###Different versions/different outputs
 
