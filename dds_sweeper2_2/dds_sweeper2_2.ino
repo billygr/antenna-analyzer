@@ -36,7 +36,8 @@ const char  SoftwareVersion[] = "Software Version: " __FILE__; //"Vers.:dds_swee
 const char     SoftwareDate[] = "Build Date      : " __DATE__; //"Vers.:dds_sweeper1_13dez2014.ino";
 
 // the setup routine runs once when you press reset:
-void setup() {
+void setup() 
+{
   // Configiure DDS control pins for digital output
   pinMode(FQ_UD, OUTPUT);
   pinMode(SCLK, OUTPUT);
@@ -51,7 +52,6 @@ void setup() {
   pinMode(A1, INPUT);
   analogReference(INTERNAL); // ref voltage = 1,1 volt
 
-
   // initialize serial communication at 57600 baud
   Serial.begin(57600);
 
@@ -64,6 +64,7 @@ void setup() {
 
   calc_offset();
   version();
+
   Serial.flush();
 }
 
@@ -140,7 +141,8 @@ void interpreter(char rxd)
       break;
   }
 }
-void sweep_info() {
+void sweep_info()
+{
   Serial.println("--- Sweep info ---");
   Serial.print("Start Freq:\t");
   Serial.println(Fstart_MHz * 1000000);
@@ -156,12 +158,13 @@ void version()
   Serial.println();
 }
 void help()
-{ Serial.println("---- commands---");
+{
+  Serial.println("---- commands---");
   Serial.println("letter\tdescription\t\texample\t\tresult");
   Serial.println("'a'\tset start frequency\t6000000a\t6.000 Mhz");
   Serial.println("'b'\tset end frequency\t8000000b\t8.000 Mhz");
   Serial.println("'c'\tset constant frequency\t7032000c\t7.032 Mhz");
-  Serial.println("'n'\tset numer of steps\t100n\t\t100 steps");
+  Serial.println("'n'\tset number of steps\t100n\t\t100 steps");
   Serial.println("'s'\tperform sweep from frequency a to b with n steps");
   Serial.println("'?'\tsweep info");
   Serial.println("'h'\thelp");
@@ -169,12 +172,7 @@ void help()
   Serial.println("---- commands may be lower or upper case ----");
   Serial.println("Gimmick:");
   Serial.println("'t'\t\"tune\" on/off ; send carrier with start frequency ( command 'a' or 'c' )");
-  Serial.println("'!'\tstore following text in EEPROM for beacon tx, end with <enter>");
-  Serial.println("'#'\tsend beacon tx text again and again ( break with '#' )");
-  Serial.println(" \tBeacon frequency is start frequency ( command 'a' or 'c' )");
-  Serial.print("actual beacon text: \"");
-
-  Serial.println("\"");
+  Serial.println("");
   Serial.print("Info offset forward: ");
   Serial.print(offset_forward, 0);
   Serial.print("; reverse: ");
@@ -184,7 +182,8 @@ void help()
 
 
 // the loop routine runs over and over again forever:
-void loop() {
+void loop()
+{
   //Check for character
   if (Serial.available() > 0)
   { interpreter( Serial.read() );
@@ -193,7 +192,8 @@ void loop() {
 }
 
 void calc_offset()
-{ int i;
+{
+  int i;
   int n = 16;
   SetDDSFreq(0.0); //frequenz auf null einstellen
   delay(100);
@@ -209,34 +209,41 @@ void calc_offset()
   offset_reverse =   offset_reverse / n;
   offset_forward  =  offset_forward / n;
 }
-void Perform_sweep() {
+
+void Perform_sweep()
+{
   double FWD = 0;
   double REV = 0;
   double VSWR;
   double Fstep_MHz = (Fstop_MHz - Fstart_MHz) / num_steps;
 
-  // Start loop
-  for (int i = 0; i <= num_steps; i++) {
+  // Start loop from 1 since i want to output exact num_steps
+  for (int i = 1; i <= num_steps; i++) {
     // Calculate current frequency
     current_freq_MHz = Fstart_MHz + i * Fstep_MHz;
     // Set DDS to current frequency
     SetDDSFreq(current_freq_MHz * 1000000);
     // Wait a little for settling
     delay(100);
-    // Read the forawrd and reverse voltages
+    // Read the forward and reverse voltages
     REV = (double)analogRead(A0) - offset_reverse;
     FWD = (double)analogRead(A1) - offset_forward;
     if (REV >= FWD)
-    { REV = FWD - 1;
+    {
+      REV = FWD - 1;
     }
+
     if (REV < 1)
-    { REV = 1;
+    {
+      REV = 1;
     }
     VSWR = (FWD + REV) / (FWD - REV);
 
     if (VSWR >= 29.0)
-    { VSWR = 28.999;
+    {
+      VSWR = 28.999;
     }
+
     //Skalieren fuer Ausgabe
     VSWR = VSWR * 1000.0;
 
@@ -247,20 +254,22 @@ void Perform_sweep() {
     Serial.print(", ");
     Serial.print(FWD, 0);
     Serial.print(", ");
-    Serial.print(REV, 0);Serial.print("\n");//Potential workaround to vb.net SerialPort.ReadLine
+    Serial.println(REV, 0);
   }
   // Send "End" to PC to indicate end of sweep
   dds_off();
-  Serial.print("End\n"); //Potential workaround to vb.net SerialPort.ReadLine
+  Serial.println("End");
   Serial.flush();
 }
 
 void SetDDSFreq(double Freq_Hz)
-{ // Calculate the DDS word - from AD9850 Datasheet
+{
+  // Calculate the DDS word - from AD9850 Datasheet
   int32_t f = Freq_Hz * 4294967295 / 125000000;
   // Send one byte at a time
   for (int b = 0; b < 4; b++, f >>= 8)
-  { send_byte(f & 0xFF);
+  {
+    send_byte(f & 0xFF);
   }
   // 5th byte needs to be zeros
   send_byte(0);
@@ -269,10 +278,12 @@ void SetDDSFreq(double Freq_Hz)
   digitalWrite(FQ_UD, LOW);
 }
 
-void send_byte(byte data_to_send) {
+void send_byte(byte data_to_send)
+{
   // Bit bang the byte over the SPI bus
   for (int i = 0; i < 8; i++, data_to_send >>= 1)
-  { // Set Data bit on output pin
+  {
+    // Set Data bit on output pin
     digitalWrite(SDAT, data_to_send & 0x01);
     // Strobe the clock pin
     digitalWrite(SCLK, HIGH);
@@ -281,9 +292,11 @@ void send_byte(byte data_to_send) {
 }
 
 void tune()
-{ SetDDSFreq(Fstart_MHz * 1000000);
+{
+  SetDDSFreq(Fstart_MHz * 1000000);
 }
 
 void dds_off()
-{ SetDDSFreq(0L); // Null hertz = AUS
+{
+  SetDDSFreq(0L); // Null hertz = AUS
 }
